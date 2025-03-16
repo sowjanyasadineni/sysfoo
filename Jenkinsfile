@@ -5,13 +5,7 @@ pipeline {
         maven 'Maven-3.9.9'  // Ensure you have this Maven version configured in Jenkins
     }
 
-    stages {
-        stage('Checkout Code') {
-            steps {
-                echo 'Checking out source code...'
-                checkout scm
-            }
-        }
+    
 
         stage('Build') {
             steps {

@@ -1,32 +1,50 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven-3.9.9'  // Ensure you have this Maven version configured in Jenkins
+    }
+
     stages {
-        stage('one') {
+        stage('Checkout Code') {
             steps {
-                echo 'Sleeping for 2 seconds...'
-                sh 'sleep 2'
+                echo 'Checking out source code...'
+                checkout scm
             }
         }
 
-        stage('two') {
+        stage('Build') {
             steps {
-                echo 'Sleeping for 2 seconds...'
-                sh 'sleep 2'
+                echo 'Building the application...'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
-        stage('three') {
+        stage('Test') {
             steps {
-                echo 'Sleeping for 2 seconds...'
-                sh 'sleep 2'
+                echo 'Running unit tests...'
+                sh 'mvn test'
             }
-        }  
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Packaging the application...'
+                sh 'mvn package'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                sh 'echo "Deploying the artifact..."'
+            }
+        }
     }
 
     post {
         success {
-            echo '✅ Pipeline executed successfully!'
+            echo '✅ Pipeline completed successfully!'
         }
         failure {
             echo '❌ Pipeline failed!'
